@@ -15,7 +15,8 @@ public class Matrix {
     //поиск обратной матрицы
     public double[][] getInverseMatrix() {
         double[][] matrixToChange = new double[matrix.length][matrix.length];
-        double me;//коэффицент
+        double[][] mCopy = matrix;//сохраняем изначальную матрицу
+        double me = maxElem;//коэффицент
         //задаю единичную матрицу
         for (int i = 0; i < getMatrix().length; i++) {
             for (int j = 0; j < getMatrix().length; j++) {
@@ -28,16 +29,17 @@ public class Matrix {
         }
 
         for (int k = 0; k < getMatrix().length; k++) {
+            me = matrix[k][k];
             for (int j = 0; j < getMatrix().length; j++) {
-                matrix[k][j] /= matrix[k][k];
-                matrixToChange[k][j] /= matrixToChange[k][k];
+                matrix[k][j] /= me;
+                matrixToChange[k][j] /= me;
             }
             //прямой ход
             for (int i = k + 1; i < getMatrix().length; i++) {
                 me = matrix[i][k];
                 for (int j = 0; j < getMatrix().length; j++) {
                     matrix[i][j] -= matrix[k][j] * me;
-                    matrixToChange[i][j] -= matrixToChange[k][j]*me;
+                    matrixToChange[i][j] -= matrixToChange[k][j] * me;
                 }
             }
         }
@@ -51,6 +53,7 @@ public class Matrix {
                 }
             }
         }
+        matrix = mCopy;
         inverseMatrix = matrixToChange;
         return inverseMatrix;
     }
@@ -129,11 +132,28 @@ public class Matrix {
     }
 
     public double getMaxElem() {
+        double max = Double.MIN_VALUE;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (max < Math.abs(matrix[i][j])) {
+                    maxElem = matrix[i][j];
+                }
+            }
+        }
         return maxElem;
     }
 
     public void setMaxElem(double maxElem) {
         this.maxElem = maxElem;
+    }
+
+    public void printMatrix(double[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     @Override

@@ -1,18 +1,24 @@
 import java.util.Arrays;
 
+
 public class Main {
 
     public static void main(String[] args) {
 
-        double[][] m = {{1, 0, 0}, {0, 1, 0}, {1, 0, 1}};
-        Matrix matrix = new Matrix(m);
-        matrix.getMaxElemAndCoeff();
-        Matrix iMatrix = new Matrix(matrix.getInverseMatrix());
-        m = iMatrix.getMatrix();
+        int n = 10;
+        double[][] m = new double[n][n];
+        double [][] mInv = new double[n][n];
+        Generator generator = new Generator();
+        generator.mygen(m, mInv, n, Math.pow(10, -14), 1, 1, 2,0, 1); // симметричная
+        //generator.mygen(m, mInv, n, Math.pow(10, -14), 1, 1, 2, 1, 1); //простой структуры
+        //mygen(m, mInv, n, Math.pow(10, -14), 1, 0, 0, 2, 1); // жорданова клетка (n>2)
+        System.out.println("|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|");
         //вывод матрицы
-        for (int i = 0; i < matrix.getMatrix().length; i++) {
-            System.out.println(Arrays.toString(m[i]));
-        }
+        Matrix matrix = new Matrix(m);
+        double[][] invM = matrix.getInverseMatrix();
+        matrix.printMatrix(invM);
+
+
 
     }
 
