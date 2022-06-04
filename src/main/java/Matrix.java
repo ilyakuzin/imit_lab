@@ -14,9 +14,18 @@ public class Matrix {
 
     //поиск обратной матрицы
     public double[][] getInverseMatrix() {
+
+        double[][] mCopy = new double[matrix.length][matrix.length];
         double[][] matrixToChange = new double[matrix.length][matrix.length];
-        double[][] mCopy = matrix;//сохраняем изначальную матрицу
-        double me = maxElem;//коэффицент
+        double me;
+
+        //сохраняем матрицу
+        for (int i = 0; i < getMatrix().length; i++) {
+            for (int j = 0; j < getMatrix().length; j++) {
+                mCopy[i][j] = matrix[i][j];
+            }
+        }
+
         //задаю единичную матрицу
         for (int i = 0; i < getMatrix().length; i++) {
             for (int j = 0; j < getMatrix().length; j++) {
@@ -28,12 +37,14 @@ public class Matrix {
             }
         }
 
+        //делим на главный коэффицент
         for (int k = 0; k < getMatrix().length; k++) {
             me = matrix[k][k];
             for (int j = 0; j < getMatrix().length; j++) {
                 matrix[k][j] /= me;
                 matrixToChange[k][j] /= me;
             }
+
             //прямой ход
             for (int i = k + 1; i < getMatrix().length; i++) {
                 me = matrix[i][k];
@@ -53,26 +64,34 @@ public class Matrix {
                 }
             }
         }
-        matrix = mCopy;
+        //возвращаем матрицу
+        setMatrix(mCopy);
         inverseMatrix = matrixToChange;
         return inverseMatrix;
     }
 
-    public void swapLines(int lineNumberToChange) {
-        double[] line = getLine(lineNumberToChange);
-        for (int j = 0; j < getMatrix().length; j++) {
-            matrix[lineNumberToChange][j] = matrix[0][j];
-            matrix[0][j] = line[j];
+    //печать матрицы
+    public void printMatrix(double[][] matrix, int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
         }
     }
 
-    public void swapColumn(int columnNumberToSwap) {
-        double[] column = getColumn(columnNumberToSwap);
-        for (int i = 0; i < getMatrix().length; i++) {
-            matrix[i][columnNumberToSwap] = matrix[0][i];
-            matrix[i][0] = column[i];
+    //умножение матриц
+    public double[][] multiplyMatrix(double[][] mA, double[][] mB, double[][] result, int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    result[i][j] += mA[i][k] * mB[k][j];
+                }
+            }
         }
+        return result;
     }
+
 
     public void getMaxElemAndCoeff() {
         double max = Double.MIN_VALUE;
@@ -112,7 +131,12 @@ public class Matrix {
     }
 
     public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
+        for (int i = 0; i < getMatrix().length; i++) {
+            for (int j = 0; j < getMatrix().length; j++) {
+                this.matrix[i][j] = matrix[i][j];
+            }
+        }
+
     }
 
     public int getMaxLineElemNumber() {
@@ -147,14 +171,6 @@ public class Matrix {
         this.maxElem = maxElem;
     }
 
-    public void printMatrix(double[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                System.out.print(matrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
 
     @Override
     public String toString() {
