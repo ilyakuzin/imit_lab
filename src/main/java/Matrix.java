@@ -92,6 +92,23 @@ public class Matrix {
         return result;
     }
 
+    //матричная норма
+    public double matrNorm(double[][] a, int n) {
+
+        double s;
+        double norm = 0.;
+
+        for (int i = 0; i < n; i++) {
+            s = 0;
+            for (int j = 0; j < n; j++) {
+                s += Math.abs(a[i][j]);
+                if (s > norm) norm = s;
+            }
+        }
+
+        return norm;
+    }
+
 
     public void getMaxElemAndCoeff() {
         double max = Double.MIN_VALUE;
