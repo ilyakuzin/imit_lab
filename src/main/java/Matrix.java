@@ -114,7 +114,7 @@ public class Matrix {
     }
 
     public void writeToFileHeader() throws IOException {
-        try (PrintWriter pw = new PrintWriter(new FileOutputStream("t.txt", true))) {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream("file.txt", true))) {
             pw.printf("--------------------------------------------------------------------------------------------");
             pw.println();
             pw.print("|         a           |         b          |            R           |           Z          |");
