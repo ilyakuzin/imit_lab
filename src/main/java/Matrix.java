@@ -1,3 +1,6 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 public class Matrix {
@@ -7,6 +10,7 @@ public class Matrix {
     private int maxColumnElemNumber;
     private double maxElem;
     private double[][] inverseMatrix;
+    private double norm;
 
     public Matrix(double[][] matrix) {
         this.matrix = matrix;
@@ -96,7 +100,7 @@ public class Matrix {
     public double matrNorm(double[][] a, int n) {
 
         double s;
-        double norm = 0.;
+        this.norm = 0.;
 
         for (int i = 0; i < n; i++) {
             s = 0;
@@ -106,7 +110,58 @@ public class Matrix {
             }
         }
 
-        return norm;
+        return this.norm;
+    }
+
+    public void writeToFileHeader() throws IOException {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream("t.txt", true))) {
+            pw.printf("--------------------------------------------------------------------------------------------");
+            pw.println();
+            pw.print("|         a           |         b          |            R           |           Z          |");
+            pw.println();
+            pw.printf("--------------------------------------------------------------------------------------------");
+            pw.println();
+        }
+    }
+
+    public void writeToFile(double[][] m, double[][] mInv, double[][] aInv, double[][] r, int n, double alpha, double betta)
+            throws IOException {
+        try (PrintWriter out = new PrintWriter(new FileOutputStream("file.txt", true))) {
+
+                double[] res = getRandZ(m, mInv, aInv, r, n);
+                out.printf("| %14.10e |", alpha);
+                out.printf(" %14.10e |", betta);
+                out.printf(" %14.10e |", res[0]);
+                out.printf(" %14.10e |", res[1]);
+                out.printf(" %14.10e |", res[2]);
+                out.printf("--------------------------------------------------------------------------------------------");
+                out.println();
+
+
+        }
+    }
+
+    public double[] getRandZ(double[][] m, double[][] mInv, double[][] aInv, double[][] r, int n) {
+        double[] res = new double[3];
+        for (int i = 0; i < n; i++) {
+            r[i][i] -= 1;
+        }
+        multiplyMatrix(m, mInv, r, n);
+        double norm = matrNorm(r, n);
+        //System.out.print("|     " + norm + "      ");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                r[i][j] = mInv[i][j] - aInv[i][j];
+            }
+        }
+        res[0] = norm;
+        norm = matrNorm(r, n);
+        res[1] = norm;
+        //System.out.print("|     " + norm + "      |");
+        norm /= matrNorm(aInv, n);
+        res[2] = norm;
+        //System.out.print("     " + norm + "      |");
+        return res;
     }
 
 

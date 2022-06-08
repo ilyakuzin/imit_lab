@@ -1,11 +1,13 @@
 import gen.Generator;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         //размерность
-        int n = 5;
+        int n = 10;
         //матрицы
         double[][] m = new double[n][n];       //матрица
         double[][] mInv = new double[n][n];     //обратная матрица
@@ -64,7 +66,26 @@ public class Main {
         norm = matrix.matrNorm(r, n);
         System.out.println("||  Z  || = " + norm);
         norm /= matrix.matrNorm(aInv, n);
-        System.out.println("||  Zeta =  || = " + norm);
+        System.out.println("||  Zeta   || = " + norm);
+
+        //запись в файл
+        //generator.writeHeadFile();
+        //generator.writeFile();
+
+
+        int i = 1;
+        while (i <= 16) {
+            double alpha = Math.pow(10, i);  //1;
+            double betta = 1;               //Math.pow(10,i);
+            generator.mygen(m, mInv, 10, alpha, betta, -1, 1, 2, 1);
+            matrix.writeToFileHeader();
+            matrix.writeToFile(m, mInv, aInv, r, n, alpha, betta);
+
+            i++;
+        }
+
+
+
     }
 
 

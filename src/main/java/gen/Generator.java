@@ -739,8 +739,8 @@ public class Generator {
 
         int i = 1;
         while (gen.getKsi() <= 1e-1) {
-            double betta = Math.pow(10, i);  //1;
-            double alpha = 1;               //Math.pow(10,i);
+            double alpha = Math.pow(10, i);  //1;
+            double betta = 1;               //Math.pow(10,i);
             gen.mygen(a, aInv, 10, alpha, betta, -1, 1, 2, 1);
             double[] x = gen.genX();
             //получаю правые части уравнения - f
